@@ -68,3 +68,14 @@ type Liquidacao struct {
 	DataLiquidacao time.Time
 	DataLiquidacaoVencimenot time.Time
 }
+
+// struct que guarda todas as entidades pós normalizacação
+type DadosNormalizados struct {
+	Pessoas []Pessoa
+	Contratos []Contrato
+	Empenhos []Empenho
+	Despesas []Despesa
+	Fontes []Fonte
+	EmpenhosFontes []EmpenhoFonte
+	Liquidacoes []Liquidacao
+}

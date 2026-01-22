@@ -1,5 +1,7 @@
 package main
 
+import "time"
+
 // struct para guardar dados antes da normalização
 type DadosNaoNormalizados struct {
 	ANO_DOCUMENTO                   string
@@ -12,9 +14,57 @@ type DadosNaoNormalizados struct {
 	NRO_EMPENHO                     string
 	NRO_PAGAMENTO_ORDEM             string
 	NOM_PESSOA                      string
-	SDL_LIQUIDACAO_ORDEM_FINAL      int
+	SDL_LIQUIDACAO_ORDEM_FINAL      float64
 	VLR_LIQUIDACAO                  float64
 	NDA_LICITACAO                   string
 	MOTIVO_QUEBRA_ORDEM_CRONOLOGICA string
 }
 
+// structs das entidades normalizadas
+type Pessoa struct {
+	IdPessoa   int
+	NomePessoa string
+}
+
+type Contrato struct {
+	IdContrato   int
+	IdPessoa     int
+	NomeContrato string
+	NumLicitacao string
+}
+
+type Empenho struct {
+	IdContrato   int
+	AnoDocumento int
+	NumEmpenho   int
+	NumOrdemFila int
+	MotivoQuebra string
+}
+
+type Despesa struct {
+	IdDespesa            int
+	IdLiquidacao         int
+	SaldoLiquidacaoFinal float64
+	NumPagamentoOrdem    int
+	ValorLiquidacao      float64
+}
+
+type Fonte struct {
+	IdFonte int
+	NomFonteRecurso string
+}
+
+type EmpenhoFonte struct {
+	IdFonte int
+	IdEmpenho int
+	AnoDocumento int
+}
+
+type Liquidacao struct {
+	IdLiquidacao int
+	AnoDocumento int
+	NumEmpenho int
+	NumLiquidacao int
+	DataLiquidacao time.Time
+	DataLiquidacaoVencimenot time.Time
+}

@@ -1,7 +1,5 @@
 package main
 
-import "time"
-
 // struct para guardar dados antes da normalização
 type DadosNaoNormalizados struct {
 	ANO_DOCUMENTO                   string
@@ -34,7 +32,7 @@ type Contrato struct {
 }
 
 type Empenho struct {
-	IdEmpenho int
+	IdEmpenho    int
 	IdContrato   int
 	AnoDocumento int
 	NumEmpenho   int
@@ -56,17 +54,16 @@ type Fonte struct {
 }
 
 type EmpenhoFonte struct {
-	IdFonte      int
-	IdEmpenho    int
+	IdFonte   int
+	IdEmpenho int
 }
 
 type Liquidacao struct {
 	IdLiquidacao             int
-	AnoDocumento             int
-	NumEmpenho               int
+	IdEmpenho                int
 	NumLiquidacao            int
-	DataLiquidacao           time.Time
-	DataLiquidacaoVencimenot time.Time
+	DataLiquidacao           string
+	DataLiquidacaoVencimento string
 }
 
 // struct que guarda todas as entidades pós normalizacação

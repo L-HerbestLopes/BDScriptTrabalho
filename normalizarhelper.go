@@ -1,6 +1,8 @@
 package main
 
-import "strconv"
+import (
+	"strconv"
+)
 
 func checarIgualdadePessoa(dados_nn DadosNaoNormalizados, pessoa Pessoa) bool {
 	return dados_nn.NOM_PESSOA == pessoa.NomePessoa
@@ -73,6 +75,36 @@ func encontrarFonte(dados DadosNormalizados, dados_nn DadosNaoNormalizados) int 
 	}
 
 	return id_fonte
+}
+
+func checarIgualdadeLiquidacao(dados DadosNormalizados, dados_nn DadosNaoNormalizados, liquidacao Liquidacao) bool {
+	NRO_LIQUIDACAO_INT, _ := strconv.Atoi(dados_nn.NRO_LIQUIDACAO)
+
+	return NRO_LIQUIDACAO_INT == liquidacao.NumLiquidacao &&
+		dados_nn.DAT_LIQUIDACAO == liquidacao.DataLiquidacao &&
+		dados_nn.DAT_LIQUIDACAO_VENCIMENTO == liquidacao.DataLiquidacaoVencimento &&
+		checarIgualdadeEmpenho(dados, dados_nn, dados.Empenhos[liquidacao.IdEmpenho])
+}
+
+func encontrarLiquidacao(dados DadosNormalizados, dados_nn DadosNaoNormalizados) int {
+	id_liquidacao := 0
+
+	for _, liquidacao := range dados.Liquidacoes {
+		if checarIgualdadeLiquidacao(dados, dados_nn, liquidacao) {
+			id_liquidacao = liquidacao.IdLiquidacao
+		}
+	}
+
+	return id_liquidacao
+}
+
+func checarIgualdadeDespesa(dados DadosNormalizados, dados_nn DadosNaoNormalizados, despesa Despesa) bool {
+	NRO_PAGAMENTO_ORDEM_INT, _ := strconv.Atoi(dados_nn.NRO_PAGAMENTO_ORDEM)
+
+	return dados_nn.SDL_LIQUIDACAO_ORDEM_FINAL == despesa.SaldoLiquidacaoFinal &&
+		dados_nn.VLR_LIQUIDACAO == despesa.ValorLiquidacao &&
+		NRO_PAGAMENTO_ORDEM_INT == despesa.NumPagamentoOrdem &&
+		checarIgualdadeLiquidacao(dados, dados_nn, dados.Liquidacoes[despesa.IdLiquidacao])
 }
 
 func checarIgualdadeEmpenhoFonte(dados DadosNormalizados, dados_nn DadosNaoNormalizados, empenho_fonte EmpenhoFonte) bool {

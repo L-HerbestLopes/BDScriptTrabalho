@@ -12,5 +12,5 @@ func main() {
 	fmt.Printf("Importados %d entidades para a memória principal\n", len(lista_dados_nn))
 
 	// normaliza os dados
-	NormalizarDadosThreaded(lista_dados_nn)
+	NormalizarDados(lista_dados_nn)
 }

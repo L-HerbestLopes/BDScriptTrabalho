@@ -1,0 +1,48 @@
+package main
+
+import "strconv"
+
+func checarIgualdadePessoa(dados_nn DadosNaoNormalizados, pessoa Pessoa) bool {
+	return dados_nn.NOM_PESSOA == pessoa.NomePessoa
+}
+
+func encontrarPessoa(dados DadosNormalizados, dados_nn DadosNaoNormalizados) int {
+	id_pessoa := 0
+
+	for _, pessoa := range dados.Pessoas {
+		if checarIgualdadePessoa(dados_nn, pessoa) {
+			id_pessoa = pessoa.IdPessoa
+		}
+	}
+
+	return id_pessoa
+}
+
+func checarIgualdadeContrato(dados DadosNormalizados, dados_nn DadosNaoNormalizados, contrato Contrato) bool {
+	return dados_nn.NOM_CONTRATO_TIPO == contrato.NomeContrato &&
+		dados_nn.NDA_LICITACAO == contrato.NumLicitacao &&
+		checarIgualdadePessoa(dados_nn, dados.Pessoas[contrato.IdPessoa])
+}
+
+func encontrarContrato(dados DadosNormalizados, dados_nn DadosNaoNormalizados) int {
+	id_contrato := 0
+
+	for _, contrato := range dados.Contratos {
+		if checarIgualdadeContrato(dados, dados_nn, contrato) {
+			id_contrato = contrato.IdContrato
+		}
+	}
+
+	return id_contrato
+}
+
+func checarIgualdadeEmpenho(dados DadosNormalizados, dados_nn DadosNaoNormalizados, empenho Empenho) bool {
+	ANO_DOCUMENTO_INT, _ := strconv.Atoi(dados_nn.ANO_DOCUMENTO)
+	NRO_EMPENHO_INT, _ := strconv.Atoi(dados_nn.NRO_EMPENHO)
+
+	return ANO_DOCUMENTO_INT == empenho.AnoDocumento &&
+		NRO_EMPENHO_INT == empenho.NumEmpenho &&
+		dados_nn.NRO_ORDEM_FILA == empenho.NumOrdemFila &&
+		dados_nn.MOTIVO_QUEBRA_ORDEM_CRONOLOGICA == empenho.MotivoQuebra &&
+		checarIgualdadeContrato(dados, dados_nn, dados.Contratos[empenho.IdContrato])
+}

@@ -9,6 +9,8 @@ func NormalizarDados(dados_nn []DadosNaoNormalizados) DadosNormalizados {
 	// inicializa struct
 	dados := DadosNormalizados{}
 
+	fmt.Printf("\n")
+
 	// preenche Pessoas
 	for _, linha := range dados_nn {
 		// verifica se pessoa já existe nos dados
@@ -25,10 +27,11 @@ func NormalizarDados(dados_nn []DadosNaoNormalizados) DadosNormalizados {
 			pessoa := Pessoa{len(dados.Pessoas), linha.NOM_PESSOA}
 
 			dados.Pessoas = append(dados.Pessoas, pessoa)
+			fmt.Printf("\rEncontradas %d entidades tipo \"Pessoa\".", len(dados.Pessoas))
 		}
 	}
 
-	fmt.Printf("Encontradas %d entidades tipo \"Pessoa\".\n", len(dados.Pessoas))
+	fmt.Printf("\n")
 
 	// preenche Contratos
 	for _, linha := range dados_nn {
@@ -50,10 +53,11 @@ func NormalizarDados(dados_nn []DadosNaoNormalizados) DadosNormalizados {
 				linha.NOM_CONTRATO_TIPO, linha.NDA_LICITACAO}
 
 			dados.Contratos = append(dados.Contratos, contrato)
+			fmt.Printf("\rEncontradas %d entidades tipo \"Contrato\".", len(dados.Contratos))
 		}
 	}
 
-	fmt.Printf("Encontradas %d entidades tipo \"Contrato\".\n", len(dados.Contratos))
+	fmt.Printf("\n")
 
 	// preenche Empenhos
 	for _, linha := range dados_nn {
@@ -78,10 +82,11 @@ func NormalizarDados(dados_nn []DadosNaoNormalizados) DadosNormalizados {
 				NRO_EMPENHO_INT, linha.NRO_ORDEM_FILA, linha.MOTIVO_QUEBRA_ORDEM_CRONOLOGICA}
 
 			dados.Empenhos = append(dados.Empenhos, empenho)
+			fmt.Printf("\rEncontradas %d entidades tipo \"Empenho\".", len(dados.Empenhos))
 		}
 	}
 
-	fmt.Printf("Encontradas %d entidades tipo \"Empenho\".\n", len(dados.Empenhos))
+	fmt.Printf("\n")
 
 	// preenche Fontes
 	for _, linha := range dados_nn {
@@ -99,10 +104,11 @@ func NormalizarDados(dados_nn []DadosNaoNormalizados) DadosNormalizados {
 			fonte := Fonte{len(dados.Fontes), linha.NOM_FONTE_RECURSO_TCE}
 
 			dados.Fontes = append(dados.Fontes, fonte)
+			fmt.Printf("\rEncontradas %d entidades tipo \"Fonte\".", len(dados.Fontes))
 		}
 	}
 
-	fmt.Printf("Encontradas %d entidades tipo \"Fonte\".\n", len(dados.Fontes))
+	fmt.Printf("\n")
 
 	// preenche Liquidacoes
 	for _, linha := range dados_nn {
@@ -126,10 +132,11 @@ func NormalizarDados(dados_nn []DadosNaoNormalizados) DadosNormalizados {
 				NRO_LIQUIDACAO_INT, linha.DAT_LIQUIDACAO, linha.DAT_LIQUIDACAO_VENCIMENTO}
 
 			dados.Liquidacoes = append(dados.Liquidacoes, liquidacao)
+			fmt.Printf("\rEncontradas %d entidades tipo \"Liquidacao\".", len(dados.Liquidacoes))
 		}
 	}
 
-	fmt.Printf("Encontradas %d entidades tipo \"Liquidacao\".\n", len(dados.Liquidacoes))
+	fmt.Printf("\n")
 
 	// preenche Despesas
 	for _, linha := range dados_nn {
@@ -154,8 +161,11 @@ func NormalizarDados(dados_nn []DadosNaoNormalizados) DadosNormalizados {
 				linha.VLR_LIQUIDACAO}
 
 			dados.Despesas = append(dados.Despesas, despesa)
+			fmt.Printf("\rEncontradas %d entidades do tipo \"Despesa\".", len(dados.Despesas))
 		}
 	}
+
+	fmt.Printf("\n")
 
 	// preenche EmpenhoFontes
 	for _, linha := range dados_nn {
@@ -177,10 +187,11 @@ func NormalizarDados(dados_nn []DadosNaoNormalizados) DadosNormalizados {
 			empenho_fonte := EmpenhoFonte{id_fonte, id_empenho}
 
 			dados.EmpenhoFontes = append(dados.EmpenhoFontes, empenho_fonte)
+			fmt.Printf("\rEncontradas %d entidades associativas tipo \"Empenho Fonte\".", len(dados.EmpenhoFontes))
 		}
 	}
 
-	fmt.Printf("Encontradas %d entidades associativas tipo \"Empenho Fonte\"\n", len(dados.EmpenhoFontes))
+	fmt.Printf("\n")
 
 	// retorna dados normalizados
 	return dados

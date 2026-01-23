@@ -48,7 +48,7 @@ func NormalizarDados(dados_nn []DadosNaoNormalizados) DadosNormalizados {
 
 			contrato := Contrato{len(dados.Contratos), id_pessoa,
 				linha.NOM_CONTRATO_TIPO, linha.NDA_LICITACAO}
-			
+
 			dados.Contratos = append(dados.Contratos, contrato)
 		}
 	}
@@ -66,7 +66,7 @@ func NormalizarDados(dados_nn []DadosNaoNormalizados) DadosNormalizados {
 				break
 			}
 		}
-		
+
 		if !empenho_existe {
 			// encontrar IdContrato correto
 			id_contrato := encontrarContrato(dados, linha)
@@ -74,14 +74,60 @@ func NormalizarDados(dados_nn []DadosNaoNormalizados) DadosNormalizados {
 			ANO_DOCUMENTO_INT, _ := strconv.Atoi(linha.ANO_DOCUMENTO)
 			NRO_EMPENHO_INT, _ := strconv.Atoi(linha.NRO_EMPENHO)
 
-			empenho := Empenho {id_contrato, ANO_DOCUMENTO_INT,
-			NRO_EMPENHO_INT, linha.NRO_ORDEM_FILA, linha.MOTIVO_QUEBRA_ORDEM_CRONOLOGICA}
+			empenho := Empenho{len(dados.Empenhos), id_contrato, ANO_DOCUMENTO_INT,
+				NRO_EMPENHO_INT, linha.NRO_ORDEM_FILA, linha.MOTIVO_QUEBRA_ORDEM_CRONOLOGICA}
 
 			dados.Empenhos = append(dados.Empenhos, empenho)
 		}
 	}
 
 	fmt.Printf("Encontradas %d entidades tipo \"Empenho\".\n", len(dados.Empenhos))
+
+	// preenche Fontes
+	for _, linha := range dados_nn {
+		// verifica se a fonte já existe
+		fonte_existe := false
+
+		for _, fonte := range dados.Fontes {
+			if checarIgualdadeFonte(linha, fonte) {
+				fonte_existe = true
+				break
+			}
+		}
+
+		if !fonte_existe {
+			fonte := Fonte{len(dados.Fontes), linha.NOM_FONTE_RECURSO_TCE}
+
+			dados.Fontes = append(dados.Fontes, fonte)
+		}
+	}
+
+	fmt.Printf("Encontradas %d entidades tipo \"Fonte\".\n", len(dados.Fontes))
+
+	// preenche EmpenhoFontes
+	for _, linha := range dados_nn {
+		// verifica se a entidade já existe
+		empenho_fonte_existe := false
+
+		for _, empenho_fonte := range dados.EmpenhoFontes {
+			if checarIgualdadeEmpenhoFonte(dados, linha, empenho_fonte) {
+				empenho_fonte_existe = true
+				break
+			}
+		}
+
+		if !empenho_fonte_existe {
+			// encontrar IdEmpenho e IdFonte
+			id_empenho := encontrarEmpenho(dados, linha)
+			id_fonte := encontrarFonte(dados, linha)
+
+			empenho_fonte := EmpenhoFonte{id_fonte, id_empenho}
+
+			dados.EmpenhoFontes = append(dados.EmpenhoFontes, empenho_fonte)
+		}
+	}
+
+	fmt.Printf("Encontradas %d entidades associativas tipo \"Empenho Fonte\"\n", len(dados.EmpenhoFontes))
 
 	// retorna dados normalizados
 	return dados

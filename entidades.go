@@ -34,6 +34,7 @@ type Contrato struct {
 }
 
 type Empenho struct {
+	IdEmpenho int
 	IdContrato   int
 	AnoDocumento int
 	NumEmpenho   int
@@ -50,32 +51,31 @@ type Despesa struct {
 }
 
 type Fonte struct {
-	IdFonte int
+	IdFonte         int
 	NomFonteRecurso string
 }
 
 type EmpenhoFonte struct {
-	IdFonte int
-	IdEmpenho int
-	AnoDocumento int
+	IdFonte      int
+	IdEmpenho    int
 }
 
 type Liquidacao struct {
-	IdLiquidacao int
-	AnoDocumento int
-	NumEmpenho int
-	NumLiquidacao int
-	DataLiquidacao time.Time
+	IdLiquidacao             int
+	AnoDocumento             int
+	NumEmpenho               int
+	NumLiquidacao            int
+	DataLiquidacao           time.Time
 	DataLiquidacaoVencimenot time.Time
 }
 
 // struct que guarda todas as entidades pós normalizacação
 type DadosNormalizados struct {
-	Pessoas []Pessoa
-	Contratos []Contrato
-	Empenhos []Empenho
-	Despesas []Despesa
-	Fontes []Fonte
-	EmpenhosFontes []EmpenhoFonte
-	Liquidacoes []Liquidacao
+	Pessoas       []Pessoa
+	Contratos     []Contrato
+	Empenhos      []Empenho
+	Despesas      []Despesa
+	Fontes        []Fonte
+	EmpenhoFontes []EmpenhoFonte
+	Liquidacoes   []Liquidacao
 }

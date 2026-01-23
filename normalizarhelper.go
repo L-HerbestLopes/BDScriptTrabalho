@@ -46,3 +46,36 @@ func checarIgualdadeEmpenho(dados DadosNormalizados, dados_nn DadosNaoNormalizad
 		dados_nn.MOTIVO_QUEBRA_ORDEM_CRONOLOGICA == empenho.MotivoQuebra &&
 		checarIgualdadeContrato(dados, dados_nn, dados.Contratos[empenho.IdContrato])
 }
+
+func encontrarEmpenho(dados DadosNormalizados, dados_nn DadosNaoNormalizados) int {
+	id_empenho := 0
+
+	for _, empenho := range dados.Empenhos {
+		if checarIgualdadeEmpenho(dados, dados_nn, empenho) {
+			id_empenho = empenho.IdEmpenho
+		}
+	}
+
+	return id_empenho
+}
+
+func checarIgualdadeFonte(dados_nn DadosNaoNormalizados, fonte Fonte) bool {
+	return dados_nn.NOM_FONTE_RECURSO_TCE == fonte.NomFonteRecurso
+}
+
+func encontrarFonte(dados DadosNormalizados, dados_nn DadosNaoNormalizados) int {
+	id_fonte := 0
+
+	for _, fonte := range dados.Fontes {
+		if checarIgualdadeFonte(dados_nn, fonte) {
+			id_fonte = fonte.IdFonte
+		}
+	}
+
+	return id_fonte
+}
+
+func checarIgualdadeEmpenhoFonte(dados DadosNormalizados, dados_nn DadosNaoNormalizados, empenho_fonte EmpenhoFonte) bool {
+	return checarIgualdadeEmpenho(dados, dados_nn, dados.Empenhos[empenho_fonte.IdEmpenho]) &&
+		checarIgualdadeFonte(dados_nn, dados.Fontes[empenho_fonte.IdFonte])
+}

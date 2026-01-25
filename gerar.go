@@ -4,6 +4,7 @@ import (
 	"os"
 	"log"
 	"strconv"
+	"strings"
 )
 
 func GerarScript(dados DadosNormalizados) {
@@ -19,25 +20,27 @@ func GerarScript(dados DadosNormalizados) {
 func GerarDML(arquivo *os.File, dados DadosNormalizados) {
 	arquivo.WriteString("-- Pessoa\n")
 	for _, pessoa := range(dados.Pessoas) {
-		values := "(\"" + pessoa.NomePessoa + "\");\n"
+		nome_pessoa := CorrigirNome(pessoa.NomePessoa)
+
+		values := "('" + nome_pessoa + "');\n"
 		arquivo.WriteString("INSERT INTO Pessoa (nomePessoa) VALUES " + values)
 	}
 
 	arquivo.WriteString("\n-- Contrato\n")
 	for _, contrato := range(dados.Contratos) {
-		values := "(" + strconv.Itoa(contrato.IdPessoa) + ", \"" + contrato.NomeContrato + "\", \"" + contrato.NumLicitacao + "\");\n"
+		values := "(" + strconv.Itoa(contrato.IdPessoa) + ", '" + contrato.NomeContrato + "', '" + contrato.NumLicitacao + "');\n"
 		arquivo.WriteString("INSERT INTO Contrato (idPessoa, nomeContrato, numeroLicitacao) VALUES " + values)
 	}
 
 	arquivo.WriteString("\n-- Empenho\n")
 	for _, empenho := range(dados.Empenhos) {
-		values := "(" + strconv.Itoa(empenho.IdContrato) + ", " + strconv.Itoa(empenho.AnoDocumento) + ", " + strconv.Itoa(empenho.NumEmpenho) + ", " + strconv.Itoa(empenho.NumOrdemFila) + ", \"" + empenho.MotivoQuebra + "\");\n"
+		values := "(" + strconv.Itoa(empenho.IdContrato) + ", " + strconv.Itoa(empenho.AnoDocumento) + ", " + strconv.Itoa(empenho.NumEmpenho) + ", " + strconv.Itoa(empenho.NumOrdemFila) + ", '" + empenho.MotivoQuebra + "');\n"
 		arquivo.WriteString("INSERT INTO Empenho (idContrato, anoDocumento, numeroEmpenho, numeroOrdemFila, motivoQuebra) VALUES " + values)
 	}
 
 	arquivo.WriteString("\n-- Fonte\n")
 	for _, fonte := range(dados.Fontes) {
-		values := "(\"" + fonte.NomFonteRecurso + "\");\n"
+		values := "('" + fonte.NomFonteRecurso + "');\n"
 		arquivo.WriteString("INSERT INTO Fonte (nomeFonteRecurso) VALUES " + values)
 	}
 
@@ -49,7 +52,7 @@ func GerarDML(arquivo *os.File, dados DadosNormalizados) {
 
 	arquivo.WriteString("\n-- Liquidacao\n")
 	for _, liquidacao := range(dados.Liquidacoes) {
-		values := "(" + strconv.Itoa(liquidacao.IdEmpenho) + ", " + strconv.Itoa(liquidacao.NumLiquidacao) + ", \"" + liquidacao.DataLiquidacao + "\", \"" + liquidacao.DataLiquidacaoVencimento + "\");\n"
+		values := "(" + strconv.Itoa(liquidacao.IdEmpenho) + ", " + strconv.Itoa(liquidacao.NumLiquidacao) + ", '" + liquidacao.DataLiquidacao + "', '" + liquidacao.DataLiquidacaoVencimento + "');\n"
 		arquivo.WriteString("INSERT INTO Liquidacao (idEmpenho, numeroLiquidacao, dataLiquidacao, dataLiquidacaoVencimento) VALUES " + values)
 	}
 
@@ -58,4 +61,16 @@ func GerarDML(arquivo *os.File, dados DadosNormalizados) {
 		values := "(" + strconv.Itoa(despesa.IdLiquidacao) + ", " + strconv.FormatFloat(despesa.SaldoLiquidacaoFinal, 'f', -1, 64) + ", " + strconv.Itoa(despesa.NumPagamentoOrdem) + ", " + strconv.FormatFloat(despesa.ValorLiquidacao, 'f', -1, 64) + ");\n"
 		arquivo.WriteString("INSERT INTO Despesa (idLiquidacao, saldoLiquidacaoFinal, numeroPagamentoOrdem, valorLiquidacao) VALUES " + values)
 	}
+}
+
+func CorrigirNome(nome string) string {
+	novo_nome := []rune(nome)
+
+	if i := strings.Index(nome, "'"); i != -1 {
+		novo_nome = append(novo_nome, ' ')
+		copy(novo_nome[i + 1:], novo_nome[i:])
+		novo_nome[i] = '\''
+	}
+
+	return string(novo_nome)
 }

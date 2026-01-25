@@ -24,7 +24,7 @@ func NormalizarDados(dados_nn []DadosNaoNormalizados) DadosNormalizados {
 		}
 
 		if !pessoa_existe {
-			pessoa := Pessoa{len(dados.Pessoas), linha.NOM_PESSOA}
+			pessoa := Pessoa{len(dados.Pessoas) + 1, linha.NOM_PESSOA}
 
 			dados.Pessoas = append(dados.Pessoas, pessoa)
 			fmt.Printf("\rEncontradas %d entidades tipo \"Pessoa\".", len(dados.Pessoas))
@@ -49,7 +49,7 @@ func NormalizarDados(dados_nn []DadosNaoNormalizados) DadosNormalizados {
 			// encontrar IdPessoa correto
 			id_pessoa := encontrarPessoa(dados, linha)
 
-			contrato := Contrato{len(dados.Contratos), id_pessoa,
+			contrato := Contrato{len(dados.Contratos) + 1, id_pessoa,
 				linha.NOM_CONTRATO_TIPO, linha.NDA_LICITACAO}
 
 			dados.Contratos = append(dados.Contratos, contrato)
@@ -78,7 +78,7 @@ func NormalizarDados(dados_nn []DadosNaoNormalizados) DadosNormalizados {
 			ANO_DOCUMENTO_INT, _ := strconv.Atoi(linha.ANO_DOCUMENTO)
 			NRO_EMPENHO_INT, _ := strconv.Atoi(linha.NRO_EMPENHO)
 
-			empenho := Empenho{len(dados.Empenhos), id_contrato, ANO_DOCUMENTO_INT,
+			empenho := Empenho{len(dados.Empenhos) + 1, id_contrato, ANO_DOCUMENTO_INT,
 				NRO_EMPENHO_INT, linha.NRO_ORDEM_FILA, linha.MOTIVO_QUEBRA_ORDEM_CRONOLOGICA}
 
 			dados.Empenhos = append(dados.Empenhos, empenho)
@@ -101,7 +101,7 @@ func NormalizarDados(dados_nn []DadosNaoNormalizados) DadosNormalizados {
 		}
 
 		if !fonte_existe {
-			fonte := Fonte{len(dados.Fontes), linha.NOM_FONTE_RECURSO_TCE}
+			fonte := Fonte{len(dados.Fontes) + 1, linha.NOM_FONTE_RECURSO_TCE}
 
 			dados.Fontes = append(dados.Fontes, fonte)
 			fmt.Printf("\rEncontradas %d entidades tipo \"Fonte\".", len(dados.Fontes))
@@ -128,7 +128,7 @@ func NormalizarDados(dados_nn []DadosNaoNormalizados) DadosNormalizados {
 
 			NRO_LIQUIDACAO_INT, _ := strconv.Atoi(linha.NRO_LIQUIDACAO)
 
-			liquidacao := Liquidacao{len(dados.Liquidacoes), id_empenho,
+			liquidacao := Liquidacao{len(dados.Liquidacoes) + 1, id_empenho,
 				NRO_LIQUIDACAO_INT, linha.DAT_LIQUIDACAO, linha.DAT_LIQUIDACAO_VENCIMENTO}
 
 			dados.Liquidacoes = append(dados.Liquidacoes, liquidacao)
@@ -156,7 +156,7 @@ func NormalizarDados(dados_nn []DadosNaoNormalizados) DadosNormalizados {
 
 			NRO_PAGAMENTO_ORDEM_INT, _ := strconv.Atoi(linha.NRO_PAGAMENTO_ORDEM)
 
-			despesa := Despesa{len(dados.Despesas), id_liquidacao,
+			despesa := Despesa{len(dados.Despesas) + 1, id_liquidacao,
 				linha.SDL_LIQUIDACAO_ORDEM_FINAL, NRO_PAGAMENTO_ORDEM_INT,
 				linha.VLR_LIQUIDACAO}
 

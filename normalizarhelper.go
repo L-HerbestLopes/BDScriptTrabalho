@@ -23,7 +23,7 @@ func encontrarPessoa(dados DadosNormalizados, dados_nn DadosNaoNormalizados) int
 func checarIgualdadeContrato(dados DadosNormalizados, dados_nn DadosNaoNormalizados, contrato Contrato) bool {
 	return dados_nn.NOM_CONTRATO_TIPO == contrato.NomeContrato &&
 		dados_nn.NDA_LICITACAO == contrato.NumLicitacao &&
-		checarIgualdadePessoa(dados_nn, dados.Pessoas[contrato.IdPessoa])
+		checarIgualdadePessoa(dados_nn, dados.Pessoas[contrato.IdPessoa - 1])
 }
 
 func encontrarContrato(dados DadosNormalizados, dados_nn DadosNaoNormalizados) int {
@@ -46,7 +46,7 @@ func checarIgualdadeEmpenho(dados DadosNormalizados, dados_nn DadosNaoNormalizad
 		NRO_EMPENHO_INT == empenho.NumEmpenho &&
 		dados_nn.NRO_ORDEM_FILA == empenho.NumOrdemFila &&
 		dados_nn.MOTIVO_QUEBRA_ORDEM_CRONOLOGICA == empenho.MotivoQuebra &&
-		checarIgualdadeContrato(dados, dados_nn, dados.Contratos[empenho.IdContrato])
+		checarIgualdadeContrato(dados, dados_nn, dados.Contratos[empenho.IdContrato - 1])
 }
 
 func encontrarEmpenho(dados DadosNormalizados, dados_nn DadosNaoNormalizados) int {
@@ -83,7 +83,7 @@ func checarIgualdadeLiquidacao(dados DadosNormalizados, dados_nn DadosNaoNormali
 	return NRO_LIQUIDACAO_INT == liquidacao.NumLiquidacao &&
 		dados_nn.DAT_LIQUIDACAO == liquidacao.DataLiquidacao &&
 		dados_nn.DAT_LIQUIDACAO_VENCIMENTO == liquidacao.DataLiquidacaoVencimento &&
-		checarIgualdadeEmpenho(dados, dados_nn, dados.Empenhos[liquidacao.IdEmpenho])
+		checarIgualdadeEmpenho(dados, dados_nn, dados.Empenhos[liquidacao.IdEmpenho - 1])
 }
 
 func encontrarLiquidacao(dados DadosNormalizados, dados_nn DadosNaoNormalizados) int {
@@ -104,10 +104,10 @@ func checarIgualdadeDespesa(dados DadosNormalizados, dados_nn DadosNaoNormalizad
 	return dados_nn.SDL_LIQUIDACAO_ORDEM_FINAL == despesa.SaldoLiquidacaoFinal &&
 		dados_nn.VLR_LIQUIDACAO == despesa.ValorLiquidacao &&
 		NRO_PAGAMENTO_ORDEM_INT == despesa.NumPagamentoOrdem &&
-		checarIgualdadeLiquidacao(dados, dados_nn, dados.Liquidacoes[despesa.IdLiquidacao])
+		checarIgualdadeLiquidacao(dados, dados_nn, dados.Liquidacoes[despesa.IdLiquidacao - 1])
 }
 
 func checarIgualdadeEmpenhoFonte(dados DadosNormalizados, dados_nn DadosNaoNormalizados, empenho_fonte EmpenhoFonte) bool {
-	return checarIgualdadeEmpenho(dados, dados_nn, dados.Empenhos[empenho_fonte.IdEmpenho]) &&
-		checarIgualdadeFonte(dados_nn, dados.Fontes[empenho_fonte.IdFonte])
+	return checarIgualdadeEmpenho(dados, dados_nn, dados.Empenhos[empenho_fonte.IdEmpenho - 1]) &&
+		checarIgualdadeFonte(dados_nn, dados.Fontes[empenho_fonte.IdFonte - 1])
 }

@@ -12,5 +12,8 @@ func main() {
 	fmt.Printf("Importados %d entidades para a memória principal\n", len(lista_dados_nn))
 
 	// normaliza os dados
-	NormalizarDados(lista_dados_nn)
+	dados_normalizados := NormalizarDados(lista_dados_nn)
+
+	// gera o script
+	GerarScript(dados_normalizados)
 }
